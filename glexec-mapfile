@@ -1,0 +1,9 @@
+
+#
+# Sample mapfile for static mappings in glexec
+#
+
+# (source) (dest)
+# user1 user2
+# bbockelm bbockelm_glexec
+
