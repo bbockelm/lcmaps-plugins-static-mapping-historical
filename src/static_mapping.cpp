@@ -8,11 +8,13 @@
 
 #include <boost/tokenizer.hpp>
 
+extern "C" {
 #include <lcmaps/lcmaps_log.h>
+}
 
 static const char * logstr = "static-mapping";
 
-uid_t getMappingUID(uid_t uid, const char * mapfile) {
+uid_t getMappedUID(uid_t uid, const char * mapfile) {
 
   FILE *fp = NULL;
 
@@ -33,28 +35,36 @@ uid_t getMappingUID(uid_t uid, const char * mapfile) {
   bool match = false;
 
   char buf[LINE_MAX];
-  while (fgets(buf, LINE_MAX, fp) == NULL) {
+  while ((fgets(buf, LINE_MAX, fp)) != NULL) {
+
+    // Ignore comment lines
+    if (strchr(buf, '#') != NULL) {
+      continue;
+    }
+
     std::string s(buf);
-    boost::tokenizer<> tok(s);
+    boost::tokenizer<> tokens(s);
     bool found_token_1 = false, found_token_2 = false;
-    for (boost::tokenizer<>::iterator token=tok.begin(); token!=tok.end(); ++token) {
-      if ((*token)[0] == '#') {
+
+    for(boost::tokenizer<>::const_iterator it = tokens.begin(); it != tokens.end(); ++it) {
+      std::string token = *it;
+      if ((token)[0] == '#') {
         break;
       }
       if (found_token_1 == false) {
         found_token_1 = true;
-        match = *token == parent_str;
+        match = (token == parent_str);
       } else if (found_token_2 == false) {
-        target_str = *token;
+        target_str = token;
         found_token_2 = true;
         match = true;
       } else {
-        lcmaps_log(0, "%s: Invalid line in mapfile: %s.\n", logstr, buf);
+        lcmaps_log(0, "%s: Invalid line in mapfile: %s", logstr, buf);
         match = false;
       }
     }
     if (found_token_1 && !found_token_2) {
-      lcmaps_log(0, "%s: Invalid line in mapfile: %s.\n", logstr, buf);
+      lcmaps_log(0, "%s: Invalid line in mapfile: %s", logstr, buf);
       continue;
     }
     if (match) {
@@ -62,7 +72,7 @@ uid_t getMappingUID(uid_t uid, const char * mapfile) {
     }
   }
 
-  if (ferror(fp)) {
+  if (!feof(fp) && ferror(fp)) {
     lcmaps_log(0, "%s: Error reading from mapfile %s: (errno=%d) %s.\n", logstr, mapfile, errno, strerror(errno));
     fclose(fp);
     return -1;

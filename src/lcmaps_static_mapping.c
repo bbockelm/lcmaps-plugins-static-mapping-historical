@@ -50,6 +50,7 @@ int getGroupInfo(uid_t uid) {
     lcmaps_log(0, "%s: Unable to get username for target UID %d.\n", logstr, uid);
     return LCMAPS_MOD_FAIL;
   }
+  lcmaps_log(3, "%s: Adding a primary GID %d.\n", logstr, pw->pw_gid);
   if (addCredentialData(PRI_GID, &(pw->pw_gid)) == -1) {
     lcmaps_log(0, "%s: Unable to add primary GID %d to credential data.", logstr, pw->pw_gid);
     return LCMAPS_MOD_FAIL;
@@ -74,6 +75,7 @@ int getGroupInfo(uid_t uid) {
   }
   int idx;
   for (idx = 0; idx<ng; idx++) {
+    lcmaps_log(3, "%s: Added a secondary GID: %d.\n", logstr, groups[idx]);
     if (addCredentialData(SEC_GID, &(groups[idx])) == -1) {
       lcmaps_log(0, "%s: Unable to add secondary GID %d to credential data.\n", logstr, groups[idx]);
     }
@@ -207,8 +209,9 @@ int plugin_run(int argc, lcmaps_argument_t *argv)
     lcmaps_log(3, "%s: Unable to map %d; module failure.\n", logstr, uid);
     return LCMAPS_MOD_FAIL;
   }
+  lcmaps_log(3,"%s: Static mapping of %d -> %d.\n", logstr, uid, target_uid);
   if (addCredentialData(UID, &target_uid) == -1) {
-    lcmaps_log(0, "%s: Unable to add UID %d to credential data.\n", logstr, uid);
+    lcmaps_log(0, "%s: Unable to add UID %d to credential data.\n", logstr, target_uid);
     return LCMAPS_MOD_FAIL;
   }
 

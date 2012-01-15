@@ -56,7 +56,7 @@ liblcmaps_static_mapping_la_SOURCES = \
 liblcmaps_static_mapping_la_LDFLAGS = -avoid-version
 
 gridsecdir = $(sysconfdir)/grid-security
-gridsec_DATA = glexec-mapfile
+dist_gridsec_DATA = glexec-mapfile
 
 install-data-hook:
 	( \
