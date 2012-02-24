@@ -1,6 +1,6 @@
 Summary: LCMAPS plugin for a static mapfile
 Name: lcmaps-plugins-static-mapping
-Version: 0.0.1
+Version: 0.0.2
 Release: 1%{?dist}
 License: Public Domain
 Group: System Environment/Libraries
@@ -14,6 +14,7 @@ Group: System Environment/Libraries
 Source0: %{name}-%{version}.tar.gz
 
 BuildRequires: lcmaps-interface
+BuildRequires: boost-devel
 
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
@@ -46,6 +47,9 @@ rm -rf $RPM_BUILD_ROOT
 %config(noreplace) %{_sysconfdir}/grid-security/glexec-mapfile
 
 %changelog
+* Fri Feb 24 2012 Brian Bockelman <bbockelm@cse.unl.edu> - 0.0.2-1
+- Fix mapfile bug found by UCSD.
+
 * Sun Jan 15 2012 Brian Bockelman <bbockelm@cse.unl.edu> - 0.0.1-1
 - Initial version.
 

@@ -57,7 +57,6 @@ uid_t getMappedUID(uid_t uid, const char * mapfile) {
       } else if (found_token_2 == false) {
         target_str = token;
         found_token_2 = true;
-        match = true;
       } else {
         lcmaps_log(0, "%s: Invalid line in mapfile: %s", logstr, buf);
         match = false;

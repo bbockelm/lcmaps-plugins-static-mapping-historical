@@ -16,7 +16,7 @@
  # 
  ############################################################### 
 
-AC_INIT(lcmaps-plugins-static-mapping,0.0.1,bbockelm@cse.unl.edu)
+AC_INIT(lcmaps-plugins-static-mapping,0.0.2,bbockelm@cse.unl.edu)
 AC_PREREQ(2.57)
 AM_INIT_AUTOMAKE([1.9 no-define foreign])
 AC_CONFIG_MACRO_DIR([m4])
